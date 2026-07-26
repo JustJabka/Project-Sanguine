@@ -1,4 +1,4 @@
-package justjabka.project_sanguine.type;
+package justjabka.project_sanguine.types;
 
 import net.minecraft.util.StringRepresentable;
 import org.apache.commons.lang3.Range;

@@ -3,7 +3,7 @@ package justjabka.project_sanguine.rendering;
 import justjabka.project_sanguine.ProjectSanguine;
 import justjabka.project_sanguine.contents.attachment.PlayerData;
 import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
-import justjabka.project_sanguine.type.Sanity;
+import justjabka.project_sanguine.types.Sanity;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;

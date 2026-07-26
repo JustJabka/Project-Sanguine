@@ -2,6 +2,7 @@ package justjabka.project_sanguine;
 
 import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
 import justjabka.project_sanguine.registries.ProjectSanguineCommands;
+import justjabka.project_sanguine.registries.ProjectSanguineEvents;
 import net.fabricmc.api.ModInitializer;
 
 import net.minecraft.resources.Identifier;
@@ -17,6 +18,7 @@ public class ProjectSanguine implements ModInitializer {
 	public void onInitialize() {
 		ProjectSanguineAttachments.initialize();
 		ProjectSanguineCommands.initialize();
+		ProjectSanguineEvents.initialize();
 	}
 
 	public static Identifier id(String path) {
