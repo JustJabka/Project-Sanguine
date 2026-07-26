@@ -9,8 +9,8 @@ import net.minecraft.util.Mth;
 
 public record PlayerData(int sanity) {
     // TODO: Move MAX_SANITY to the attribute
-    private static final int MAX_SANITY = 100;
-    private static final int MIN_SANITY = 0;
+    public static final int MAX_SANITY = 100;
+    public static final int MIN_SANITY = -25;
 
     public static final PlayerData DEFAULT = new PlayerData(MAX_SANITY);
 

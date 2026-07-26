@@ -7,9 +7,11 @@ import justjabka.project_sanguine.type.Sanity;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 
 public class RenderSanityBar {
+    private static final RandomSource RANDOM = RandomSource.create();
     private static final Identifier SANITY_SPRITES = ProjectSanguine.id("hud/sanity/");
 
     public static void render(GuiGraphicsExtractor graphics, Player player, int sw, int sh) {
@@ -22,10 +24,26 @@ public class RenderSanityBar {
         int sanity = data.sanity();
 
         Sanity currentSanity = Sanity.getSanityFromValue(sanity);
-        if (currentSanity == Sanity.NORMAL) return;
+        switch (currentSanity) {
+            case NORMAL -> {
+                return;
+            }
+            case INSANITY -> {
+                if (player.tickCount % 60 != 0) break;
+                x += getRandomMovement();
+                y += getRandomMovement();
+            }
+            case DELIRIUM -> {
+                x += getRandomMovement();
+                y += getRandomMovement();
+            }
+        }
 
         Identifier currentSanitySprite = SANITY_SPRITES.withSuffix(currentSanity.getSerializedName());
-
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, currentSanitySprite, x, y, size, size);
+    }
+
+    private static int getRandomMovement() {
+        return RANDOM.nextInt(3) - 1;
     }
 }

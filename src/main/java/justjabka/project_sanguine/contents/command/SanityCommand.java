@@ -19,7 +19,7 @@ public class SanityCommand {
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.player())
-                                .then(Commands.argument("value", IntegerArgumentType.integer(0))
+                                .then(Commands.argument("value", IntegerArgumentType.integer(PlayerData.MIN_SANITY))
                                         .executes(SanityCommand::setSanity)
                                 )
                         )
