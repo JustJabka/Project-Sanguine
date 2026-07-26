@@ -2,7 +2,7 @@ package justjabka.project_sanguine.contents.command;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import justjabka.project_sanguine.contents.attachment.PlayerData;
@@ -19,7 +19,7 @@ public class SanityCommand {
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.player())
-                                .then(Commands.argument("value", IntegerArgumentType.integer(PlayerData.MIN_SANITY))
+                                .then(Commands.argument("value", FloatArgumentType.floatArg(PlayerData.MIN_SANITY))
                                         .executes(SanityCommand::setSanity)
                                 )
                         )
@@ -29,7 +29,7 @@ public class SanityCommand {
 
     private static int setSanity(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(context, "target");
-        int value = IntegerArgumentType.getInteger(context, "value");
+        float value = FloatArgumentType.getFloat(context, "value");
 
         PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
         player.setAttached(

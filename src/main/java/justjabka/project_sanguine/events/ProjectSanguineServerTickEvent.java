@@ -14,8 +14,8 @@ import net.minecraft.world.phys.AABB;
 
 public class ProjectSanguineServerTickEvent {
     private static final double SEARCH_RADIUS = 10;
-    private static final int SKY_AURA = 1;
-    private static final int PET_AURA = 1;
+    private static final float SKY_AURA = 0.1f;
+    private static final float PET_AURA = 0.1f;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(ProjectSanguineServerTickEvent::handleSanityAura);
@@ -29,9 +29,9 @@ public class ProjectSanguineServerTickEvent {
             if (gameMode == GameType.CREATIVE) continue;
             if (gameMode == GameType.SPECTATOR) continue;
 
-            int aura = 0;
+            float aura = 0f;
             aura = handlePositiveSanityAura(player, aura);
-            if (aura == 0) continue;
+            if (aura == 0f) continue;
 
             PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
             player.setAttached(
@@ -41,7 +41,7 @@ public class ProjectSanguineServerTickEvent {
         }
     }
 
-    private static int handlePositiveSanityAura(ServerPlayer player, int aura) {
+    private static float handlePositiveSanityAura(ServerPlayer player, float aura) {
         ServerLevel level = player.level();
         AABB aabb = player.getBoundingBox().inflate(SEARCH_RADIUS);
 

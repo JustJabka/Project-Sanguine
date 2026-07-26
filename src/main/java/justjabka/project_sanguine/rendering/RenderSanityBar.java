@@ -21,7 +21,7 @@ public class RenderSanityBar {
         int y = sh - 40 - size;
 
         PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
-        int sanity = data.sanity();
+        float sanity = data.sanity();
 
         Sanity currentSanity = Sanity.getSanityFromValue(sanity);
         switch (currentSanity) {
