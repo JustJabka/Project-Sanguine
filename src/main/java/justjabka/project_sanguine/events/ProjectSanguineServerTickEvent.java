@@ -13,8 +13,10 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.phys.AABB;
 
 public class ProjectSanguineServerTickEvent {
+    // TODO: Move pet aura from entity tag to NBT `project_sanguine:sanity_aura`
+    // TODO: Add Biome Attribute `project_sanguine:sanity_aura`
     private static final double SEARCH_RADIUS = 10;
-    private static final float SKY_AURA = 0.1f;
+    private static final float SKY_AURA = 0.05f;
     private static final float PET_AURA = 0.1f;
 
     public static void register() {
@@ -55,7 +57,7 @@ public class ProjectSanguineServerTickEvent {
                 aabb
         );
 
-        boolean canSeeSky = level.canSeeSky(player.getOnPos());
+        boolean canSeeSky = level.canSeeSky(player.blockPosition());
         boolean hasNearestPet = nearestPet != null;
 
         if (canSeeSky) aura += SKY_AURA;
