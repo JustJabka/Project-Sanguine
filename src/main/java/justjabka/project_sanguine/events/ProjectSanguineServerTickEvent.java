@@ -104,6 +104,8 @@ public class ProjectSanguineServerTickEvent {
 
     // Sanity Provider
     private static float getSanityFromSanityProvider(ServerPlayer player, float aura) {
+        if (player.tickCount % 60 != 0) return aura;
+
         // Get all equipment with sanity provider component
         List<EquipmentSlot> slotsWithSanityProvider = EquipmentSlot.VALUES.stream()
                 .filter(slot -> canSanityProviderUsing(player.getItemBySlot(slot), slot))
