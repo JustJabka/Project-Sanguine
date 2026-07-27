@@ -21,6 +21,7 @@ public class ProjectSanguine implements ModInitializer {
 		ProjectSanguineItems.initialize();
 		ProjectSanguineAttributes.initialize();
 		ProjectSanguineEnvironmentAttributes.initialize();
+		ProjectSanguineConsumeEffects.initialize();
 	}
 
 	public static Identifier id(String path) {
