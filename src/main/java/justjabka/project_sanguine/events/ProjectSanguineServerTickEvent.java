@@ -51,7 +51,7 @@ public class ProjectSanguineServerTickEvent {
             PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
             player.setAttached(
                     ProjectSanguineAttachments.PLAYER_DATA,
-                    data.addSanity(aura)
+                    data.addSanity(player, aura)
             );
         }
     }

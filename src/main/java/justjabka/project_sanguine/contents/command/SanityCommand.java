@@ -19,7 +19,7 @@ public class SanityCommand {
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("set")
                         .then(Commands.argument("target", EntityArgument.player())
-                                .then(Commands.argument("value", FloatArgumentType.floatArg(PlayerData.MIN_SANITY))
+                                .then(Commands.argument("value", FloatArgumentType.floatArg(0))
                                         .executes(SanityCommand::setSanity)
                                 )
                         )
@@ -34,7 +34,7 @@ public class SanityCommand {
         PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
         player.setAttached(
                 ProjectSanguineAttachments.PLAYER_DATA,
-                data.setSanity(value)
+                data.setSanity(player, value)
         );
 
         context.getSource().sendSuccess(() -> Component.translatable("commands.sanity.set.success.single", value, player.getDisplayName()), true);

@@ -7,11 +7,11 @@ import org.jspecify.annotations.NonNull;
 import java.util.Arrays;
 
 public enum Sanity implements StringRepresentable {
-    NORMAL("normal", Range.of(76f, 100f)),
-    PARANOIA("paranoia", Range.of(51f, 75f)),
-    FEAR("fear", Range.of(26f, 50f)),
-    INSANITY("insanity", Range.of(0f, 25f)),
-    DELIRIUM("delirium", Range.of(-25f, -1f));
+    NORMAL("normal", Range.of(101f, Float.MAX_VALUE)),
+    PARANOIA("paranoia", Range.of(76f, 100f)),
+    FEAR("fear", Range.of(51f, 75f)),
+    INSANITY("insanity", Range.of(26f, 50f)),
+    DELIRIUM("delirium", Range.of(0f, 25f));
 
     private final String name;
     private final Range<Float> range;

@@ -9,10 +9,17 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 
 public class ProjectSanguineAttributes {
-     public static final Holder<Attribute> SANITY_AURA = register(
+    public static final Holder<Attribute> SANITY_AURA = register(
             "sanity_aura",
             0,
             -1024,
+            1024,
+            true
+    );
+    public static final Holder<Attribute> MAX_SANITY = register(
+            "max_sanity",
+            125,
+            0,
             1024,
             true
     );
