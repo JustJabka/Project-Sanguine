@@ -1,5 +1,6 @@
-package justjabka.project_sanguine.mixin;
+package justjabka.project_sanguine.mixins;
 
+import justjabka.project_sanguine.registries.ProjectSanguineAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,6 +13,7 @@ public class LivingEntityMixin {
 
     @Inject(method = "createLivingAttributes", at = @At("RETURN"))
     private static void createLivingAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> cir) {
-//        cir.getReturnValue().add();
+        cir.getReturnValue()
+                .add(ProjectSanguineAttributes.SANITY_AURA);
     }
 }

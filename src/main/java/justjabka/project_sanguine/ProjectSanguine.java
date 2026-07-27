@@ -19,6 +19,7 @@ public class ProjectSanguine implements ModInitializer {
 		ProjectSanguineEvents.initialize();
 		ProjectSanguineComponents.initialize();
 		ProjectSanguineItems.initialize();
+		ProjectSanguineAttributes.initialize();
 	}
 
 	public static Identifier id(String path) {
