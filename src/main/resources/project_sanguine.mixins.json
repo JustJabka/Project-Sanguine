@@ -3,8 +3,13 @@
 	"package": "justjabka.project_sanguine.mixins",
 	"compatibilityLevel": "JAVA_25",
 	"mixins": [
+		"ElderGuardianMixin",
+		"EnderDragonMixin",
 		"LivingEntityMixin",
-		"PlayerMixin"
+		"MonsterMixin",
+		"PlayerMixin",
+		"WardenMixin",
+		"WitherMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
