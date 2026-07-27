@@ -1,23 +1,26 @@
 package justjabka.project_sanguine.events;
 
 import justjabka.project_sanguine.contents.attachment.PlayerData;
-import justjabka.project_sanguine.data.ProjectSanguineEntityTypeTagProvider;
+import justjabka.project_sanguine.contents.component.SanityProviderComponent;
 import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
+import justjabka.project_sanguine.registries.ProjectSanguineComponents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.util.Util;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.phys.AABB;
+
+import java.util.List;
 
 public class ProjectSanguineServerTickEvent {
     // TODO: Move pet aura from entity tag to NBT `project_sanguine:sanity_aura`
     // TODO: Add Biome Attribute `project_sanguine:sanity_aura`
-    private static final double SEARCH_RADIUS = 10;
     private static final float SKY_AURA = 0.05f;
-    private static final float PET_AURA = 0.1f;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(ProjectSanguineServerTickEvent::handleSanityAura);
@@ -32,8 +35,8 @@ public class ProjectSanguineServerTickEvent {
             if (gameMode == GameType.SPECTATOR) continue;
 
             float aura = 0f;
-            aura = handlePositiveSanityAura(player, aura);
-            if (aura == 0f) continue;
+            aura = getSanityFromEnvironment(player, aura);
+            aura = getSanityFromSanityProvider(player, aura);
 
             PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
             player.setAttached(
@@ -43,26 +46,44 @@ public class ProjectSanguineServerTickEvent {
         }
     }
 
-    private static float handlePositiveSanityAura(ServerPlayer player, float aura) {
+    private static float getSanityFromEnvironment(ServerPlayer player, float aura) {
         ServerLevel level = player.level();
-        AABB aabb = player.getBoundingBox().inflate(SEARCH_RADIUS);
-
-        LivingEntity nearestPet = level.getNearestEntity(
-                ProjectSanguineEntityTypeTagProvider.INCREASES_SANITY,
-                TargetingConditions.forNonCombat(),
-                player,
-                player.getX(),
-                player.getY(),
-                player.getZ(),
-                aabb
-        );
 
         boolean canSeeSky = level.canSeeSky(player.blockPosition());
-        boolean hasNearestPet = nearestPet != null;
 
         if (canSeeSky) aura += SKY_AURA;
-        if (hasNearestPet) aura += PET_AURA;
 
         return aura;
+    }
+
+    // Sanity Provider
+    private static float getSanityFromSanityProvider(ServerPlayer player, float aura) {
+        // Get all equipment with sanity provider component
+        List<EquipmentSlot> slotsWithSanityProvider = EquipmentSlot.VALUES.stream()
+                .filter(slot -> canSanityProviderUsing(player.getItemBySlot(slot), slot))
+                .toList();
+
+        if (slotsWithSanityProvider.isEmpty()) return aura;
+
+        // Find item that need to be damaged
+        EquipmentSlot slotToDamage = Util.getRandom(slotsWithSanityProvider, player.getRandom());
+        ItemStack itemToDamage = player.getItemBySlot(slotToDamage);
+
+        SanityProviderComponent sanityProvider = itemToDamage.get(ProjectSanguineComponents.SANITY_PROVIDER);
+
+        // Provide sanity and damage item
+        if (sanityProvider != null) {
+            itemToDamage.hurtAndBreak(sanityProvider.itemDamagePerUse(), player, slotToDamage);
+            aura += sanityProvider.sanityPerUse();
+        }
+
+        return aura;
+    }
+
+    private static boolean canSanityProviderUsing(final ItemStack itemStack, final EquipmentSlot slot) {
+        if (!itemStack.has(ProjectSanguineComponents.SANITY_PROVIDER)) return false;
+
+        Equippable equippable = itemStack.get(DataComponents.EQUIPPABLE);
+        return equippable != null && slot == equippable.slot() && !itemStack.nextDamageWillBreak();
     }
 }

@@ -11,7 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 
 public class RenderSanityBar {
-    private static final RandomSource RANDOM = RandomSource.create();
     private static final Identifier SANITY_SPRITES = ProjectSanguine.id("hud/sanity/");
 
     public static void render(GuiGraphicsExtractor graphics, Player player, int sw, int sh) {
@@ -30,12 +29,12 @@ public class RenderSanityBar {
             }
             case INSANITY -> {
                 if (player.tickCount % 60 != 0) break;
-                x += getRandomMovement();
-                y += getRandomMovement();
+                x += getRandomMovement(player);
+                y += getRandomMovement(player);
             }
             case DELIRIUM -> {
-                x += getRandomMovement();
-                y += getRandomMovement();
+                x += getRandomMovement(player);
+                y += getRandomMovement(player);
             }
         }
 
@@ -43,7 +42,8 @@ public class RenderSanityBar {
         graphics.blitSprite(RenderPipelines.GUI_TEXTURED, currentSanitySprite, x, y, size, size);
     }
 
-    private static int getRandomMovement() {
-        return RANDOM.nextInt(3) - 1;
+    private static int getRandomMovement(Player player) {
+        RandomSource random = player.getRandom();
+        return random.nextInt(3) - 1;
     }
 }
