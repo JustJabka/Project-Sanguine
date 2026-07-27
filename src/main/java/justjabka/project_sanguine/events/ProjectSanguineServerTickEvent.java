@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.phys.AABB;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class ProjectSanguineServerTickEvent {
     private static final double SANITY_AURA_AFFECTION_RADIUS = 10;
     private static final int SANITY_AURA_ENTITY_LIMIT = 3;
     private static final float SKY_AURA = 0.05f;
+    private static final float DARKNESS_AURA = -0.2f;
+    private static final float DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER = 0.5f;
 
     public static void register() {
         ServerTickEvents.END_SERVER_TICK.register(ProjectSanguineServerTickEvent::handleSanityAura);
@@ -62,10 +65,20 @@ public class ProjectSanguineServerTickEvent {
         BlockPos blockPos = player.blockPosition();
 
         boolean canSeeSky = level.canSeeSky(blockPos);
+
         if (canSeeSky) envSanityAura += SKY_AURA;
+        else {
+            float darknessPenalty = DARKNESS_AURA;
+
+            int blockLight = level.getBrightness(LightLayer.SKY, blockPos);
+            if (blockLight >= 8) {
+                darknessPenalty *= DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER;
+            }
+
+            envSanityAura += darknessPenalty;
+        }
 
         EnvironmentAttributeMap envAttributes = level.getBiome(blockPos).value().getAttributes();
-
         envSanityAura += envAttributes.applyModifier(
                 ProjectSanguineEnvironmentAttributes.SANITY_AURA,
                 0.0f
