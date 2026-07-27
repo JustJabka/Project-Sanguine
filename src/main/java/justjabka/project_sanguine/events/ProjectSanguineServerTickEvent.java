@@ -5,12 +5,15 @@ import justjabka.project_sanguine.contents.component.SanityProviderComponent;
 import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
 import justjabka.project_sanguine.registries.ProjectSanguineAttributes;
 import justjabka.project_sanguine.registries.ProjectSanguineComponents;
+import justjabka.project_sanguine.registries.ProjectSanguineEnvironmentAttributes;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Util;
+import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,7 +26,6 @@ import net.minecraft.world.phys.AABB;
 import java.util.List;
 
 public class ProjectSanguineServerTickEvent {
-    // TODO: Add Biome Attribute `project_sanguine:sanity_aura`
     private static final double SANITY_AURA_AFFECTION_RADIUS = 10;
     private static final int SANITY_AURA_ENTITY_LIMIT = 3;
     private static final float SKY_AURA = 0.05f;
@@ -55,9 +57,19 @@ public class ProjectSanguineServerTickEvent {
     }
 
     private static float getSanityFromEnvironment(ServerPlayer player, Level level, float aura) {
-        boolean canSeeSky = level.canSeeSky(player.blockPosition());
+        BlockPos blockPos = player.blockPosition();
 
+        boolean canSeeSky = level.canSeeSky(blockPos);
         if (canSeeSky) aura += SKY_AURA;
+
+        EnvironmentAttributeMap envAttributes = level.getBiome(blockPos).value().getAttributes();
+
+        float envSanityAura = envAttributes.applyModifier(
+                ProjectSanguineEnvironmentAttributes.SANITY_AURA,
+                0.0f
+        );
+
+        aura += envSanityAura;
 
         return aura;
     }
