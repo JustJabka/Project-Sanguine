@@ -43,9 +43,9 @@ public class ProjectSanguineServerTickEvent {
 
             // Calc aura
             float aura = 0f;
-            aura = getSanityFromSanityProvider(player, aura);
-            aura = getSanityFromEnvironment(player, level, aura);
-            aura = getSanityFromEntities(player, level, aura);
+            aura += getSanityFromSanityProvider(player);
+            aura += getSanityFromEnvironment(player, level);
+            aura += getSanityFromEntities(player, level);
 
             // Update sanity
             PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
@@ -56,25 +56,27 @@ public class ProjectSanguineServerTickEvent {
         }
     }
 
-    private static float getSanityFromEnvironment(ServerPlayer player, Level level, float aura) {
+    private static float getSanityFromEnvironment(ServerPlayer player, Level level) {
+        float envSanityAura = 0f;
+
         BlockPos blockPos = player.blockPosition();
 
         boolean canSeeSky = level.canSeeSky(blockPos);
-        if (canSeeSky) aura += SKY_AURA;
+        if (canSeeSky) envSanityAura += SKY_AURA;
 
         EnvironmentAttributeMap envAttributes = level.getBiome(blockPos).value().getAttributes();
 
-        float envSanityAura = envAttributes.applyModifier(
+        envSanityAura += envAttributes.applyModifier(
                 ProjectSanguineEnvironmentAttributes.SANITY_AURA,
                 0.0f
         );
 
-        aura += envSanityAura;
-
-        return aura;
+        return envSanityAura;
     }
 
-    private static float getSanityFromEntities(ServerPlayer player, Level level, float aura) {
+    private static float getSanityFromEntities(ServerPlayer player, Level level) {
+        float entitiesAura = 0f;
+
         AABB bb = player.getBoundingBox().inflate(SANITY_AURA_AFFECTION_RADIUS);
 
         // Find all entities that have sanity aura
@@ -88,30 +90,30 @@ public class ProjectSanguineServerTickEvent {
             return sanityAura.getValue() != 0;
         });
 
-        if (entities.isEmpty()) return aura;
+        if (entities.isEmpty()) return entitiesAura;
 
         // Get total aura of entities (amount limited per entity type)
-        float entitiesAura = (float) entities.stream()
+        entitiesAura += (float) entities.stream()
                 .mapToDouble(e -> e.getAttributeValue(ProjectSanguineAttributes.SANITY_AURA))
                 .sorted()
                 .limit(SANITY_AURA_ENTITY_LIMIT)
                 .sum();
 
-        aura += entitiesAura;
-
-        return aura;
+        return entitiesAura;
     }
 
     // Sanity Provider
-    private static float getSanityFromSanityProvider(ServerPlayer player, float aura) {
-        if (player.tickCount % 60 != 0) return aura;
+    private static float getSanityFromSanityProvider(ServerPlayer player) {
+        float sanityProviderAura = 0f;
+
+        if (player.tickCount % 60 != 0) return sanityProviderAura;
 
         // Get all equipment with sanity provider component
         List<EquipmentSlot> slotsWithSanityProvider = EquipmentSlot.VALUES.stream()
                 .filter(slot -> canSanityProviderUsing(player.getItemBySlot(slot), slot))
                 .toList();
 
-        if (slotsWithSanityProvider.isEmpty()) return aura;
+        if (slotsWithSanityProvider.isEmpty()) return sanityProviderAura;
 
         // Find item that need to be damaged
         EquipmentSlot slotToDamage = Util.getRandom(slotsWithSanityProvider, player.getRandom());
@@ -122,10 +124,10 @@ public class ProjectSanguineServerTickEvent {
         // Provide sanity and damage item
         if (sanityProvider != null) {
             itemToDamage.hurtAndBreak(sanityProvider.itemDamagePerUse(), player, slotToDamage);
-            aura += sanityProvider.sanityPerUse();
+            sanityProviderAura += sanityProvider.sanityPerUse();
         }
 
-        return aura;
+        return sanityProviderAura;
     }
 
     private static boolean canSanityProviderUsing(final ItemStack itemStack, final EquipmentSlot slot) {

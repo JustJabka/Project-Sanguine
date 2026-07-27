@@ -9,11 +9,16 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameType;
 
 public class RenderSanityBar {
     private static final Identifier SANITY_SPRITES = ProjectSanguine.id("hud/sanity/");
 
     public static void render(GuiGraphicsExtractor graphics, Player player, int sw, int sh) {
+        GameType gameMode = player.gameMode();
+        if (gameMode == null) return;
+        if (!gameMode.isSurvival()) return;
+
         int size = 9;
 
         int x = sw / 2 - size / 2;
