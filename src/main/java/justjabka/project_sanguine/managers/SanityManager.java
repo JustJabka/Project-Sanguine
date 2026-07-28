@@ -77,7 +77,10 @@ public class SanityManager {
     private static float getDarknessAura(Level level, BlockPos blockPos) {
         float darknessPenalty = DARKNESS_AURA;
 
-        int blockLight = level.getBrightness(LightLayer.SKY, blockPos);
+        int skyLight = level.getBrightness(LightLayer.SKY, blockPos);
+        int blockLight = level.getBrightness(LightLayer.BLOCK, blockPos);
+
+        if (skyLight >= 8) return 0f;
         if (blockLight >= 8) {
             darknessPenalty *= DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER;
         }
