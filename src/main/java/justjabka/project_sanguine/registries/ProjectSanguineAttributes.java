@@ -37,6 +37,8 @@ public class ProjectSanguineAttributes {
     }
 
     private static void modifyVanillaAttributes() {
+        ProjectSanguine.LOGGER.info("Modifying vanilla's Attributes");
+
         final Set<EntityType<? extends LivingEntity>> SPECIFIC_POSITIVE_AURA = Set.of(
                 EntityTypes.BEE,
                 EntityTypes.WOLF,

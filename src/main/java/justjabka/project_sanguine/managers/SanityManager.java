@@ -6,6 +6,7 @@ import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
 import justjabka.project_sanguine.registries.ProjectSanguineAttributes;
 import justjabka.project_sanguine.registries.ProjectSanguineComponents;
 import justjabka.project_sanguine.registries.ProjectSanguineEnvironmentAttributes;
+import justjabka.project_sanguine.types.SanityRewardHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -54,6 +55,17 @@ public class SanityManager {
         player.setAttached(
                 ProjectSanguineAttachments.PLAYER_DATA,
                 data.addSanity(player, BONUS_SANITY_FROM_SLEEP)
+        );
+    }
+
+    public static void giveSanityRewardAfterKill(Player player, SanityRewardHolder holder) {
+        float sanityReward = holder.project_sanguine$getSanityReward();
+        if (sanityReward == 0f) return;
+
+        PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
+        player.setAttached(
+                ProjectSanguineAttachments.PLAYER_DATA,
+                data.addSanity(player, sanityReward)
         );
     }
 

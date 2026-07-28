@@ -1,5 +1,8 @@
 {
   "commands.sanity.set.success.single": "Set %s sanity on %s",
+
   "item.project_sanguine.flower_crown": "Flower Crown",
-  "attribute.name.project_sanguine.sanity_aura": "Sanity Aura"
+
+  "attribute.name.project_sanguine.sanity_aura": "Sanity Aura",
+  "attribute.name.project_sanguine.max_sanity": "Max Sanity"
 }
