@@ -1,5 +1,6 @@
 package justjabka.project_sanguine.mixins;
 
+import justjabka.project_sanguine.registries.SanityRewards;
 import justjabka.project_sanguine.types.SanityRewardHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.storage.ValueInput;
@@ -26,7 +27,8 @@ public class LivingEntityMixin implements SanityRewardHolder {
 
     @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
     private void readAdditionalSaveData(ValueInput input, CallbackInfo ci) {
-        this.sanityReward = input.getFloatOr(TAG_SANITY_REWARD, 0f);
+        LivingEntity self = (LivingEntity) (Object) this;
+        this.sanityReward = input.getFloatOr(TAG_SANITY_REWARD, SanityRewards.getDefaultReward(self.getType()));
     }
 
     @Override

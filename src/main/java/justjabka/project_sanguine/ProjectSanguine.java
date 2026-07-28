@@ -22,6 +22,7 @@ public class ProjectSanguine implements ModInitializer {
 		ProjectSanguineAttributes.initialize();
 		ProjectSanguineEnvironmentAttributes.initialize();
 		ProjectSanguineConsumeEffects.initialize();
+		SanityRewards.initialize();
 	}
 
 	public static Identifier id(String path) {
