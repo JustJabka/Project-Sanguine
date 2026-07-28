@@ -1,6 +1,8 @@
 package justjabka.project_sanguine.managers;
 
+import justjabka.project_sanguine.contents.attachment.PlayerData;
 import justjabka.project_sanguine.contents.component.SanityProviderComponent;
+import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
 import justjabka.project_sanguine.registries.ProjectSanguineAttributes;
 import justjabka.project_sanguine.registries.ProjectSanguineComponents;
 import justjabka.project_sanguine.registries.ProjectSanguineEnvironmentAttributes;
@@ -29,6 +31,7 @@ public class SanityManager {
     private static final float SKY_AURA = 0.05f;
     private static final float DARKNESS_AURA = -0.2f;
     private static final float DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER = 0.5f;
+    private static final float BONUS_SANITY_FROM_SLEEP = 15f;
 
     /**
      * Gets passive aura
@@ -44,6 +47,14 @@ public class SanityManager {
         passiveAura += getAuraFromEntities(player, level);
 
         return passiveAura;
+    }
+
+    public static void restoreSanityAfterSleep(Player player) {
+        PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
+        player.setAttached(
+                ProjectSanguineAttachments.PLAYER_DATA,
+                data.addSanity(player, BONUS_SANITY_FROM_SLEEP)
+        );
     }
 
     /**
