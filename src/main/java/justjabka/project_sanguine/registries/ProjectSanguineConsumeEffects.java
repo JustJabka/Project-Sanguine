@@ -32,15 +32,15 @@ public class ProjectSanguineConsumeEffects {
             modifyConsumeEffects(Items.SWEET_BERRIES, 1.0f, 0.5f);
             modifyConsumeEffects(Items.GLOW_BERRIES, 1.0f, 0.5f);
             modifyConsumeEffects(Items.MELON_SLICE, 1.0f, 0.8f);
-            modifyConsumeEffects(Items.APPLE, 5.0f, 1.0f);
+            modifyConsumeEffects(Items.APPLE, 3.0f, 1.0f);
             modifyConsumeEffects(Items.CHORUS_FRUIT, 1.0f, 0.5f);
-            modifyConsumeEffects(Items.GOLDEN_APPLE, 6.0f, 1.0f);
-            modifyConsumeEffects(Items.ENCHANTED_GOLDEN_APPLE, 7.0f, 1.0f);
+            modifyConsumeEffects(Items.GOLDEN_APPLE, 3.0f, 1.0f);
+            modifyConsumeEffects(Items.ENCHANTED_GOLDEN_APPLE, 5.0f, 1.0f);
 
             // Fast positive instant-sanity
-            modifyConsumeEffects(Items.COOKIE, 10.0f, 1.0f);
+            modifyConsumeEffects(Items.COOKIE, 3.0f, 1.0f);
             modifyConsumeEffects(Items.HONEY_BOTTLE, 25.0f, 1.0f);
-            modifyConsumeEffects(Items.PUMPKIN_PIE, 8.0f, 1.0f);
+            modifyConsumeEffects(Items.PUMPKIN_PIE, 5.0f, 1.0f);
             modifyConsumeEffects(Items.CAKE, 12.0f, 1.0f);
 
             // Cheap negative instant-sanity
