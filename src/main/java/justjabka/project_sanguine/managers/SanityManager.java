@@ -11,6 +11,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.ServerStatsCounter;
+import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.util.Util;
 import net.minecraft.world.attribute.EnvironmentAttributeMap;
 import net.minecraft.world.entity.EntitySelector;
@@ -33,6 +36,7 @@ public class SanityManager {
     private static final float DARKNESS_AURA = -0.2f;
     private static final float DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER = 0.5f;
     private static final float BONUS_SANITY_FROM_SLEEP = 15f;
+    private static final float INSOMNIA_AURA_MULTIPLIER = -0.1f;
 
     /**
      * Gets passive aura
@@ -44,6 +48,7 @@ public class SanityManager {
 
         ServerLevel level = player.level();
 
+        passiveAura += getInsomniaAura(player);
         passiveAura += getAuraFromEnvironment(player, level);
         passiveAura += getAuraFromEntities(player, level);
 
@@ -67,6 +72,27 @@ public class SanityManager {
                 ProjectSanguineAttachments.PLAYER_DATA,
                 data.addSanity(player, sanityReward)
         );
+    }
+
+    /**
+     * Gets aura from insomnia
+     * @param player Player
+     * @return Aura from insomnia
+     */
+    private static float getInsomniaAura(ServerPlayer player) {
+        float insomniaAura = 0f;
+
+        ServerStatsCounter stats = player.getStats();
+        int timeSinceRest = Mth.clamp(stats.getValue(Stats.CUSTOM.get(Stats.TIME_SINCE_REST)), 1, Integer.MAX_VALUE);
+
+        final int DAY_LENGTH = 24000;
+        final int MIN_INSOMNIA_TIME = DAY_LENGTH * 3;
+
+        if (timeSinceRest < MIN_INSOMNIA_TIME) return insomniaAura;
+
+        float daysWithoutSleep = (float) (timeSinceRest - MIN_INSOMNIA_TIME) / DAY_LENGTH + 1; // OHHH NO!!! LE MAGIC NUMBER😭
+
+        return daysWithoutSleep * INSOMNIA_AURA_MULTIPLIER;
     }
 
     /**
