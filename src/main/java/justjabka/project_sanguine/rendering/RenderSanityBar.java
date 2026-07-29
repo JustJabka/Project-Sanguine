@@ -1,8 +1,7 @@
 package justjabka.project_sanguine.rendering;
 
 import justjabka.project_sanguine.ProjectSanguine;
-import justjabka.project_sanguine.contents.attachment.PlayerData;
-import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
+import justjabka.project_sanguine.managers.SanityManager;
 import justjabka.project_sanguine.types.Sanity;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.renderer.RenderPipelines;
@@ -24,10 +23,7 @@ public class RenderSanityBar {
         int x = sw / 2 - size / 2;
         int y = sh - 40 - size;
 
-        PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
-        float sanity = data.sanity();
-
-        Sanity currentSanity = Sanity.getSanityFromValue(sanity);
+        Sanity currentSanity = SanityManager.getSanityStage(player);
         switch (currentSanity) {
             case NORMAL -> {
                 return;

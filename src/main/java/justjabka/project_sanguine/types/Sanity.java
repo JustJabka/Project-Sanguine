@@ -1,35 +1,47 @@
 package justjabka.project_sanguine.types;
 
 import net.minecraft.util.StringRepresentable;
-import org.apache.commons.lang3.Range;
 import org.jspecify.annotations.NonNull;
 
-import java.util.Arrays;
+import java.util.EnumSet;
 
 public enum Sanity implements StringRepresentable {
-    NORMAL("normal", Range.of(100f, Float.MAX_VALUE)),
-    PARANOIA("paranoia", Range.of(75f, 100f)),
-    FEAR("fear", Range.of(50f, 75f)),
-    INSANITY("insanity", Range.of(25f, 50f)),
-    DELIRIUM("delirium", Range.of(0f, 25f));
+    NORMAL("normal", 100f),
+    PARANOIA("paranoia", 75f),
+    FEAR("fear", 50f),
+    INSANITY("insanity", 25f),
+    DELIRIUM("delirium", 0f);
+
+    private static final Sanity[] VALUES = Sanity.values();
+    private static final EnumSet<Sanity> DANGEROUS_STAGES = EnumSet.of(INSANITY, DELIRIUM);
 
     private final String name;
-    private final Range<Float> range;
+    private final float minThreshold;
 
-    Sanity(String name, Range<Float> range) {
+    Sanity(String name, float minThreshold) {
         this.name = name;
-        this.range = range;
+        this.minThreshold = minThreshold;
     }
 
     public static Sanity getSanityFromValue(float value) {
-        return Arrays.stream(Sanity.values())
-                .filter(sanity -> sanity.range.contains(value))
-                .findFirst()
-                .orElse(Sanity.NORMAL);
+        for (Sanity stage : VALUES) {
+            if (value < stage.minThreshold) continue;
+            return stage;
+        }
+
+        return DELIRIUM;
+    }
+
+    public boolean isAggressivePhantomStage() {
+        return DANGEROUS_STAGES.contains(this);
     }
 
     @Override
     public @NonNull String getSerializedName() {
         return this.name;
+    }
+
+    public float getMinThreshold() {
+        return this.minThreshold;
     }
 }

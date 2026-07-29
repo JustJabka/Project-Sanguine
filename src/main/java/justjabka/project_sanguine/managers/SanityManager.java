@@ -6,6 +6,7 @@ import justjabka.project_sanguine.registries.ProjectSanguineAttachments;
 import justjabka.project_sanguine.registries.ProjectSanguineAttributes;
 import justjabka.project_sanguine.registries.ProjectSanguineComponents;
 import justjabka.project_sanguine.registries.ProjectSanguineEnvironmentAttributes;
+import justjabka.project_sanguine.types.Sanity;
 import justjabka.project_sanguine.types.SanityRewardHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
@@ -37,6 +38,32 @@ public class SanityManager {
     private static final float DARKNESS_AURA_WEAKENING_FROM_LIGHT_MULTIPLIER = 0.5f;
     private static final float BONUS_SANITY_FROM_SLEEP = 15f;
     private static final float INSOMNIA_AURA_MULTIPLIER = -0.1f;
+
+    public static boolean isInsane(Player player) {
+        Sanity sanity = getSanityStage(player);
+        return sanity.isAggressivePhantomStage();
+    }
+
+    public static Sanity getSanityStage(Player player) {
+        PlayerData data = player.getAttachedOrCreate(ProjectSanguineAttachments.PLAYER_DATA);
+        return Sanity.getSanityFromValue(data.sanity());
+    }
+
+    public static double getPhantomSpawnChance(Player player) {
+        Sanity sanity = getSanityStage(player);
+
+        switch (sanity) {
+            case INSANITY -> {
+                return 0.5;
+            }
+            case DELIRIUM -> {
+                return 0.8;
+            }
+            default -> {
+                return 0;
+            }
+        }
+    }
 
     /**
      * Gets passive aura
