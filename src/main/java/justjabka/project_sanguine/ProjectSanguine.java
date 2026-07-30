@@ -22,6 +22,8 @@ public class ProjectSanguine implements ModInitializer {
 		ProjectSanguineAttributes.initialize();
 		ProjectSanguineEnvironmentAttributes.initialize();
 		ProjectSanguineConsumeEffects.initialize();
+		ProjectSanguineEntityTypes.initialize();
+
 		SanityRewards.initialize();
 	}
 
