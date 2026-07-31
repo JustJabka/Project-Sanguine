@@ -79,7 +79,7 @@ public class SanityManager {
      * @param player Player
      * @return Aura from insomnia
      */
-    private static float getInsomniaAura(ServerPlayer player) {
+    public static float getInsomniaAura(ServerPlayer player) {
         float insomniaAura = 0f;
 
         ServerStatsCounter stats = player.getStats();
@@ -102,7 +102,7 @@ public class SanityManager {
      * @return Aura from environment
      * @see ProjectSanguineEnvironmentAttributes#SANITY_AURA
      */
-    private static float getAuraFromEnvironment(ServerPlayer player, Level level) {
+    public static float getAuraFromEnvironment(ServerPlayer player, Level level) {
         float envSanityAura = 0f;
 
         BlockPos blockPos = player.blockPosition();
@@ -145,7 +145,7 @@ public class SanityManager {
      * @return Aura from entities
      * @see ProjectSanguineAttributes#SANITY_AURA
      */
-    private static float getAuraFromEntities(ServerPlayer player, Level level) {
+    public static float getAuraFromEntities(ServerPlayer player, Level level) {
         float entitiesAura = 0f;
 
         List<LivingEntity> entities = getEntitiesWithAura(player, level);

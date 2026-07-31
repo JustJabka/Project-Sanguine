@@ -1,6 +1,7 @@
 {
   "commands.sanity.get.success.single": "%s has %s sanity",
-  "commands.sanity.get.environment.success.single": "Environment aura for %s is %s",
+  "commands.sanity.get.ambient.success.single": "Ambient aura for %s is %s",
+  "commands.sanity.get.ambient_detailed.success.single": "Insomnia: %s\nEnvironment: %s\nEntities: %s",
   "commands.sanity.add.success.single": "Gave %s sanity to %s",
   "commands.sanity.remove.success.single": "Taken %s sanity from %s",
   "commands.sanity.set.success.single": "Set %s sanity on %s",

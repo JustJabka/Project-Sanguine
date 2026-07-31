@@ -13,6 +13,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.apache.commons.lang3.function.TriFunction;
 
@@ -37,8 +38,15 @@ public class SanityCommand {
                 .then(Commands.literal("get")
                         .then(Commands.argument("target", EntityArgument.player())
                                 .executes(SanityCommand::getSanity)
-                                .then(Commands.literal("environment")
-                                        .executes(SanityCommand::getSanityAura)
+                                .then(Commands.literal("ambient")
+                                        .executes(context ->
+                                                getSanityAura(context, false)
+                                        )
+                                        .then(Commands.literal("full")
+                                                .executes(context ->
+                                                        getSanityAura(context, true)
+                                                )
+                                        )
                                 )
                         )
                 );
@@ -71,13 +79,25 @@ public class SanityCommand {
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int getSanityAura(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
+    private static int getSanityAura(CommandContext<CommandSourceStack> context, boolean full) throws CommandSyntaxException {
         ServerPlayer player = EntityArgument.getPlayer(context, "target");
 
-        context.getSource().sendSuccess(() -> Component.translatable("commands.sanity.get.environment.success.single",
+        CommandSourceStack source = context.getSource();
+
+        source.sendSuccess(() -> Component.translatable("commands.sanity.get.ambient.success.single",
                 player.getDisplayName(),
                 SanityManager.getPassiveAura(player)
         ), true);
+
+        if (full) {
+            ServerLevel level = player.level();
+
+            source.sendSuccess(() -> Component.translatable("commands.sanity.get.ambient_detailed.success.single",
+                SanityManager.getInsomniaAura(player),
+                SanityManager.getAuraFromEnvironment(player, level),
+                SanityManager.getAuraFromEntities(player, level)
+            ), true);
+        }
 
         return Command.SINGLE_SUCCESS;
     }
