@@ -4,5 +4,7 @@
   "item.project_sanguine.flower_crown": "Flower Crown",
 
   "attribute.name.project_sanguine.sanity_aura": "Sanity Aura",
-  "attribute.name.project_sanguine.max_sanity": "Max Sanity"
+  "attribute.name.project_sanguine.max_sanity": "Max Sanity",
+
+  "entity.project_sanguine.necrophagia": "Necrophagia"
 }
