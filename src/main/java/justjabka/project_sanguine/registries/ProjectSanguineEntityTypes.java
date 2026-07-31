@@ -2,6 +2,7 @@ package justjabka.project_sanguine.registries;
 
 import justjabka.project_sanguine.ProjectSanguine;
 import justjabka.project_sanguine.contents.entity.Necrophagia;
+import justjabka.project_sanguine.contents.entity.projectile.PhantomCharge;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,6 +22,15 @@ public class ProjectSanguineEntityTypes {
                     .ridingOffset(-0.7F)
                     .clientTrackingRange(8)
                     .notInPeaceful()
+    );
+
+    public static final EntityType<PhantomCharge> PHANTOM_CHARGE = register(
+            "phantom_charge",
+            EntityType.Builder.<PhantomCharge>of(PhantomCharge::new, MobCategory.MISC)
+                    .noLootTable()
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(4)
+                    .updateInterval(10)
     );
 
     public static void initialize() {
