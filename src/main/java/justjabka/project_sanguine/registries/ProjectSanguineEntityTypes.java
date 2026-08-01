@@ -1,6 +1,7 @@
 package justjabka.project_sanguine.registries;
 
 import justjabka.project_sanguine.ProjectSanguine;
+import justjabka.project_sanguine.contents.entity.Arachnophobia;
 import justjabka.project_sanguine.contents.entity.Necrophagia;
 import justjabka.project_sanguine.contents.entity.projectile.PhantomCharge;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -24,6 +25,16 @@ public class ProjectSanguineEntityTypes {
                     .notInPeaceful()
     );
 
+    public static final EntityType<Arachnophobia> ARACHNOPHOBIA = register(
+            "arachnophobia",
+            EntityType.Builder.<Arachnophobia>of(Arachnophobia::new, MobCategory.MONSTER)
+                    .sized(1.4F, 0.9F)
+                    .eyeHeight(0.65F)
+                    .passengerAttachments(0.765F)
+                    .clientTrackingRange(8)
+                    .notInPeaceful()
+    );
+
     public static final EntityType<PhantomCharge> PHANTOM_CHARGE = register(
             "phantom_charge",
             EntityType.Builder.<PhantomCharge>of(PhantomCharge::new, MobCategory.MISC)
@@ -38,13 +49,14 @@ public class ProjectSanguineEntityTypes {
         registerAttributes();
     }
 
+    @SuppressWarnings("UnusedReturnValue")
+    private static void registerAttributes() {
+        FabricDefaultAttributeRegistry.register(NECROPHAGIA, Necrophagia.createNecrophagiaAttributes());
+        FabricDefaultAttributeRegistry.register(ARACHNOPHOBIA, Arachnophobia.createArachnophobiaAttributes());
+    }
+
     private static <T extends Entity> EntityType<T> register(String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE, ProjectSanguine.id(name));
         return Registry.register(BuiltInRegistries.ENTITY_TYPE, key, builder.build(key));
-    }
-
-    @SuppressWarnings("UnusedReturnValue")
-    private static void registerAttributes() {
-        FabricDefaultAttributeRegistry.register(NECROPHAGIA, Necrophagia.createAttributes());
     }
 }

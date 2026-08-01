@@ -65,7 +65,7 @@ public class Necrophagia extends Monster implements RangedAttackMob {
         this.playSound(SoundEvents.PHANTOM_BITE, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
+    public static AttributeSupplier.Builder createNecrophagiaAttributes() {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MAX_HEALTH, 50)
                 .add(Attributes.FOLLOW_RANGE, 35)

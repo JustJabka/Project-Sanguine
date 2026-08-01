@@ -1,6 +1,7 @@
 package justjabka.project_sanguine.registries.client;
 
 import justjabka.project_sanguine.ProjectSanguine;
+import justjabka.project_sanguine.rendering.entity.ArachnophobiaRenderer;
 import justjabka.project_sanguine.rendering.entity.NecrophagiaRenderer;
 import justjabka.project_sanguine.registries.ProjectSanguineEntityTypes;
 import justjabka.project_sanguine.rendering.entity.PhantomChargeRenderer;
@@ -11,6 +12,7 @@ public class ProjectSanguineEntityRenderers {
         ProjectSanguine.LOGGER.info("Initializing entity renderers");
 
         EntityRenderers.register(ProjectSanguineEntityTypes.NECROPHAGIA, NecrophagiaRenderer::new);
+        EntityRenderers.register(ProjectSanguineEntityTypes.ARACHNOPHOBIA, ArachnophobiaRenderer::new);
         EntityRenderers.register(ProjectSanguineEntityTypes.PHANTOM_CHARGE, PhantomChargeRenderer::new);
     }
 }
