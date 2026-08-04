@@ -2,6 +2,7 @@ package justjabka.project_sanguine.registries;
 
 import justjabka.project_sanguine.ProjectSanguine;
 import justjabka.project_sanguine.contents.item.FlowerCrown;
+import justjabka.project_sanguine.contents.item.RitualKnife;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
@@ -11,6 +12,7 @@ import java.util.function.Function;
 
 public class ProjectSanguineItems {
     public static final Item FLOWER_CROWN = register(ProjectSanguineItemIds.FLOWER_CROWN, FlowerCrown::new, new Item.Properties());
+    public static final Item RITUAL_KNIFE = register(ProjectSanguineItemIds.RITUAL_KNIFE, RitualKnife::new, new Item.Properties());
 
     public static void initialize() {
         ProjectSanguine.LOGGER.info("Initializing Items");

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "minecraft:stick",
+    "#": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    " #",
+    "X "
+  ],
+  "result": {
+    "id": "project_sanguine:ritual_knife"
+  }
+}
